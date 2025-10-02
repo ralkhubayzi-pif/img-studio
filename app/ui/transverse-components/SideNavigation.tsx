@@ -149,7 +149,7 @@ export default function SideNav() {
         >
           / Made with <span style={{ margin: 1, color: palette.primary.main }}>❤</span> by
           <a
-            href="https://www.linkedin.com/in/aduboue/"
+            href="mailto:cloud.management@pif.gov.sa"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -159,7 +159,7 @@ export default function SideNav() {
               margin: 2,
             }}
           >
-            @Agathe
+            @Cloud Management Team
           </a>
         </Typography>
       )}
