@@ -20,6 +20,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Drawer, List, ListItem, Typography, ListItemButton, Stack, IconButton, Box } from '@mui/material'
 
 import Image from 'next/image'
+// @ts-ignore
 import icon from '../../../public/ImgStudioLogoReversedMini.svg'
 import { pages } from '../../routes'
 
