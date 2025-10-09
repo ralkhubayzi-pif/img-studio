@@ -550,8 +550,8 @@ export default function GenerateForm({
           </Stack>
           
           {/* Disclaimer */}
-          <Box sx={{ mb: 2, p: 2, backgroundColor: palette.warning.light, borderRadius: 1, border: `1px solid ${palette.warning.main}` }}>
-            <Typography variant="body2" sx={{ color: palette.warning.dark, fontWeight: 500, textAlign: 'center' }}>
+          <Box sx={{ mb: 2, p: 2, backgroundColor: '#424242', borderRadius: 1, border: `1px solid #616161` }}>
+            <Typography variant="body2" sx={{ color: 'white', fontWeight: 500, textAlign: 'center' }}>
               ⚠️ Please don't use confidential data as the processing is NOT in the Kingdom Region
             </Typography>
           </Box>
