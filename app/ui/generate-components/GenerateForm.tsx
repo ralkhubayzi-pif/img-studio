@@ -38,7 +38,6 @@ import {
   Autorenew,
   Close as CloseIcon,
   Lightbulb,
-  Mms,
   Send as SendIcon,
   WatchLater as WatchLaterIcon,
 } from '@mui/icons-material'
@@ -52,7 +51,6 @@ import { GeminiSwitch } from '../ux-components/GeminiButton'
 import CustomTooltip from '../ux-components/Tooltip'
 
 import GenerateSettings from './GenerateSettings'
-import ImageToPromptModal from './ImageToPromptModal'
 import { ReferenceBox } from './ReferenceBox'
 
 import theme from '../../theme'
@@ -316,8 +314,6 @@ export default function GenerateForm({
     return errorMessage
   }
 
-  // Image to prompt generator logic
-  const [imageToPromptOpen, setImageToPromptOpen] = useState(false)
 
   // Provide random prompt
   const getRandomPrompt = () => {
@@ -496,18 +492,6 @@ export default function GenerateForm({
           />
 
           <Stack justifyContent="flex-end" direction="row" gap={0} pb={3}>
-            <CustomTooltip title="Image to prompt generator" size="small">
-              <IconButton
-                onClick={() => setImageToPromptOpen(true)}
-                aria-label="Prompt Generator"
-                disableRipple
-                sx={{ px: 0.5 }}
-              >
-                <Avatar sx={CustomizedAvatarButton}>
-                  <Mms sx={CustomizedIconButton} />
-                </Avatar>
-              </IconButton>
-            </CustomTooltip>
             <CustomTooltip title="Get prompt ideas" size="small">
               <IconButton
                 onClick={() => setValue('prompt', getRandomPrompt())}
@@ -564,6 +548,14 @@ export default function GenerateForm({
               {'Generate'}
             </Button>
           </Stack>
+          
+          {/* Disclaimer */}
+          <Box sx={{ mb: 2, p: 2, backgroundColor: palette.warning.light, borderRadius: 1, border: `1px solid ${palette.warning.main}` }}>
+            <Typography variant="body2" sx={{ color: palette.warning.dark, fontWeight: 500, textAlign: 'center' }}>
+              ⚠️ Please don't use confidential data as the processing is NOT in the Kingdom Region
+            </Typography>
+          </Box>
+          
           {generationType === 'Image' && process.env.NEXT_PUBLIC_EDIT_ENABLED === 'true' && (
             <Accordion
               disableGutters
@@ -788,13 +780,6 @@ export default function GenerateForm({
           </Accordion>
         </Box>
       </form>
-
-      <ImageToPromptModal
-        open={imageToPromptOpen}
-        setNewPrompt={(string) => setValue('prompt', string)}
-        setImageToPromptOpen={setImageToPromptOpen}
-        target={generationType}
-      />
     </>
   )
 }
