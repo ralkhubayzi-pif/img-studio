@@ -150,7 +150,7 @@ export default function SideNav() {
         >
           / Made with <span style={{ margin: 1, color: palette.primary.main }}>❤</span> by
           <a
-            href="https://pif.gov.sa"
+            href="mailto:cloud.management@pif.gov.sa"
             target="_blank"
             rel="noopener noreferrer"
             style={{
