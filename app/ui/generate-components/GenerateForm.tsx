@@ -403,7 +403,8 @@ export default function GenerateForm({
   }
 
   const onImageSubmit: SubmitHandler<GenerateImageFormI> = async (formData) => {
-    onRequestSent(true, parseInt(formData.sampleCount))
+    const requestedCount = parseInt(formData.sampleCount)
+    onRequestSent(true, requestedCount)
 
     try {
       const areAllRefValid = formData['referenceObjects'].every(
@@ -418,19 +419,41 @@ export default function GenerateForm({
 
       if (hasReferences && areAllRefValid) setIsGeminiRewrite(false)
 
+      const isUltraModel = (formData.modelVersion || '').includes('imagen-4.0-ultra')
+
+      // If Ultra is selected and more than 1 sample requested, emulate multi-sample by batching 1-sample calls
+      if (isUltraModel && requestedCount > 1) {
+        const aggregatedImages: ImageI[] = []
+        for (let i = 0; i < requestedCount; i++) {
+          const singleFormData = { ...formData, sampleCount: '1' }
+          const batchResult = await generateImage(singleFormData, areAllRefValid, isGeminiRewrite, appContext)
+
+          if (batchResult !== undefined && typeof batchResult === 'object' && 'error' in batchResult) {
+            let errorMsg = batchResult['error'].replaceAll('Error: ', '')
+            errorMsg = manageModelNotFoundError(errorMsg, generationFields.model.options as ModelOption[])
+            throw Error(errorMsg)
+          } else {
+            batchResult.map((image) => {
+              if ('warning' in image) onNewErrorMsg(image['warning'] as string)
+            })
+            aggregatedImages.push(...batchResult)
+          }
+        }
+        onImageGeneration && onImageGeneration(aggregatedImages)
+        return
+      }
+
+      // Non-Ultra or single sample: normal path
       const newGeneratedImages = await generateImage(formData, areAllRefValid, isGeminiRewrite, appContext)
 
       if (newGeneratedImages !== undefined && typeof newGeneratedImages === 'object' && 'error' in newGeneratedImages) {
         let errorMsg = newGeneratedImages['error'].replaceAll('Error: ', '')
-
         errorMsg = manageModelNotFoundError(errorMsg, generationFields.model.options as ModelOption[])
-
         throw Error(errorMsg)
       } else {
         newGeneratedImages.map((image) => {
           if ('warning' in image) onNewErrorMsg(image['warning'] as string)
         })
-
         onImageGeneration && onImageGeneration(newGeneratedImages)
       }
     } catch (error: any) {
