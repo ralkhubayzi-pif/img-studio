@@ -605,7 +605,7 @@ export default function GenerateForm({
           {/* Disclaimer */}
           <Box sx={{ mb: 2, p: 2, backgroundColor: '#424242', borderRadius: 1, border: `1px solid #616161` }}>
             <Typography variant="body2" sx={{ color: 'white', fontWeight: 500, textAlign: 'center' }}>
-              ⚠️ Please don't use confidential data as the processing is NOT in the Kingdom Region
+              ⚠️ Please avoid using PIF confidential data, adhering to PIF data governance rules
             </Typography>
           </Box>
           
