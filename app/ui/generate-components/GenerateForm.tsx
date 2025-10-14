@@ -290,12 +290,37 @@ export default function GenerateForm({
     if (currentModel.includes('veo-2.0')) setValue('resolution', '720p')
   }, [currentModel, isAdvancedFeaturesAvailable, isOnlyITVavailable, setValue])
 
-  // Force 4 outputs when using Imagen 4 Ultra
+  // Enforce valid sampleCount for Imagen 4 Ultra (max 1); otherwise default to 4
   useEffect(() => {
-    if (currentModel.includes('imagen-4.0-ultra')) {
-      setValue('sampleCount', '4')
-    }
+    if (currentModel.includes('imagen-4.0-ultra')) setValue('sampleCount', '1')
+    else setValue('sampleCount', '4')
   }, [currentModel, setValue])
+
+  // Build settings fields per selected model (restrict Ultra to 1 output)
+  const generalSettingsFieldsForUI = React.useMemo(() => {
+    if (currentModel.includes('veo-3.0')) return tempVeo3specificSettings
+
+    const base = generationFields.settings
+    if (currentModel.includes('imagen-4.0-ultra')) {
+      return {
+        ...base,
+        sampleCount: {
+          ...base.sampleCount,
+          options: ['1'],
+          default: '1',
+        },
+      }
+    }
+    // Non-Ultra: ensure 4 is available and defaulted
+    return {
+      ...base,
+      sampleCount: {
+        ...base.sampleCount,
+        options: ['1', '2', '3', '4'],
+        default: '4',
+      },
+    }
+  }, [currentModel, generationFields.settings])
 
   // Transforms a "Publisher Model not found" error message into a user-friendly message.
   interface ModelOption {
@@ -527,9 +552,7 @@ export default function GenerateForm({
             <GenerateSettings
               control={control}
               setValue={setValue}
-              generalSettingsFields={
-                currentModel.includes('veo-3.0') ? tempVeo3specificSettings : generationFields.settings
-              }
+              generalSettingsFields={generalSettingsFieldsForUI}
               advancedSettingsFields={generationFields.advancedSettings}
               warningMessage={
                 currentModel.includes('veo-3.0') ? 'NB: for now, Veo 3 has fewer setting options than Veo 2!' : ''
