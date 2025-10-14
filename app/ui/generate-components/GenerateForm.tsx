@@ -290,6 +290,13 @@ export default function GenerateForm({
     if (currentModel.includes('veo-2.0')) setValue('resolution', '720p')
   }, [currentModel, isAdvancedFeaturesAvailable, isOnlyITVavailable, setValue])
 
+  // Force 4 outputs when using Imagen 4 Ultra
+  useEffect(() => {
+    if (currentModel.includes('imagen-4.0-ultra')) {
+      setValue('sampleCount', '4')
+    }
+  }, [currentModel, setValue])
+
   // Transforms a "Publisher Model not found" error message into a user-friendly message.
   interface ModelOption {
     value: string
