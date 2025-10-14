@@ -84,7 +84,7 @@ export default function SideNav() {
           <Image
             priority
             src={icon}
-            width={110}
+            width={140}
             alt="ImgStudio"
             style={{
               transform: 'rotate(-90deg)',
@@ -95,7 +95,7 @@ export default function SideNav() {
       {open && (
         <List dense>
           <ListItem onClick={() => setOpen(!open)} sx={{ px: 2.5, pt: 2, cursor: 'pointer' }}>
-            <Image priority src={icon} width={200} alt="ImgStudio" />
+            <Image priority src={icon} width={240} alt="ImgStudio" />
           </ListItem>
 
           {Object.values(pages).map(({ name, description, href, status }) => (
