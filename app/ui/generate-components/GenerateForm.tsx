@@ -292,7 +292,7 @@ export default function GenerateForm({
 
   // Enforce valid sampleCount for Imagen 4 Ultra (max 1); otherwise default to 4
   useEffect(() => {
-    if (currentModel.includes('imagen-4.0-ultra')) setValue('sampleCount', '1')
+    if (currentModel.includes('imagen-4.0-ultra')) setValue('sampleCount', '4')
     else setValue('sampleCount', '4')
   }, [currentModel, setValue])
 
@@ -306,8 +306,8 @@ export default function GenerateForm({
         ...base,
         sampleCount: {
           ...base.sampleCount,
-          options: ['1'],
-          default: '1',
+          options: ['1', '2', '3', '4'],
+          default: '4',
         },
       }
     }
