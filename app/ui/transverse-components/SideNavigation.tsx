@@ -84,7 +84,7 @@ export default function SideNav() {
           <Image
             priority
             src={icon}
-            width={140}
+            width={110}
             alt="ImgStudio"
             style={{
               transform: 'rotate(-90deg)',
